@@ -7,6 +7,7 @@ library(ggplot2)
 library(countrycode)
 library(ggrepel)
 library(icaeDesign)
+library(ggpubr)
 update_pop_data <- FALSE
 
 row_regions <- data.frame(
@@ -57,8 +58,10 @@ eu_bar <- ggplot(
     stat = "identity", color="white",
     fill=get_euf_colors(col_name = "blue")
     ) +
-  labs(title = "Cumulated GWP exports of EU countries (2000-2020)",
-       y = "Cumulated GWP exports (2000-2020)") +
+  labs(
+    title = "Cumulated GWP exports of EU countries (2000-2020)",
+    y = "Cumulated GWP exports (2000-2020)"
+    ) +
   geom_hline(yintercept = 1.0, color=get_euf_colors()) +
   theme_icae() +
   theme(
@@ -88,8 +91,11 @@ global_bar <- cba_accounts_abs %>%
   scale_color_euf(
     palette = "mixed", aesthetics = c("color", "fill"), reverse = FALSE
   ) +
-  labs(title = "Cumulated GWP exports (2000-2020)",
-       y = "Cumulated GWP exports (2000-2020)") +
+  labs(
+    title = "Cumulated GWP exports (2000-2020)",
+    y = "Cumulated GWP exports (2000-2020)",
+    caption = "Data: EXIOBASE3; own calculation."
+    ) +
   geom_bar(stat = "identity") +
   theme_icae() +
   theme(
@@ -102,7 +108,8 @@ global_bar <- cba_accounts_abs %>%
 full_plot <- ggpubr::ggarrange(
   eu_bar, global_bar,
   ncol = 2,
-  labels = c("A)", "B)")
+  labels = c("A)", "B)"),
+  font.label=list(size=11)
   )
 
 ggsave(
